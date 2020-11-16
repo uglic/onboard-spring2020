@@ -20,6 +20,13 @@ public class SimpleBeanFactoryPostProcessor implements BeanFactoryPostProcessor,
     public void postProcessBeanFactory(ConfigurableListableBeanFactory configurableListableBeanFactory) throws BeansException {
         System.out.println("postProcessBeanFactory 1: singletons=" + Arrays.toString(configurableListableBeanFactory.getSingletonNames()));
         BeanDefinition definition = configurableListableBeanFactory.getBeanDefinition("someName");
-        System.out.println("postProcessBeanFactory 1: definition.scope=" + definition.getScope());
+        String initialScope = definition.getScope();
+        System.out.println("postProcessBeanFactory 1: definition.scope.initial=" + definition.getScope());
+        definition.setScope("prototype");
+        System.out.println("postProcessBeanFactory 1: definition.scope.prototy=" + definition.getScope());
+        definition.setScope("singleton");
+        System.out.println("postProcessBeanFactory 1: definition.scope.singlet=" + definition.getScope());
+        definition.setScope(initialScope);
+        System.out.println("postProcessBeanFactory 1: definition.scope.restore=" + definition.getScope());
     }
 }
