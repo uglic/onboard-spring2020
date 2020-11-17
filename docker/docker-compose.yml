@@ -10,35 +10,34 @@ services:
     networks:
       - dev
 
-  rabbitmq:
-    image: library/rabbitmq:3.8.9-management
-    ports:
-      # The standard AMQP protocol port
-      - 5672:5672
-      # HTTP management UI
-      - 15672:15672
-    environment:
-      RABBIT_USER: "guest"
-      RABBIT_PASS: "guest"
-    networks:
-      - dev
-
-  #  activemq:
-  #    image: teamartemis/artemis
+  #  rabbitmq:
+  #    image: library/rabbitmq:3.8.9-management
   #    ports:
-  #      - 61616:61616
-  #      - 8161:8161
+  #      # The standard AMQP protocol port
+  #      - 5672:5672
+  #      # HTTP management UI
+  #      - 15672:15672
+  #    environment:
+  #      RABBIT_USER: "guest"
+  #      RABBIT_PASS: "guest"
   #    networks:
   #      - dev
 
   activemq-artemis:
-    build: ./activemq-artemis
+    build: ../../../tools/apache-artemis-2.16.0/
     environment:
       ARTEMIS_USER: "artemis"
       ARTEMIS_PASSWORD: "artemis"
       ANONYMOUS_LOGIN: "false"
-      EXTRA_ARGS: ""
-
+      EXTRA_ARGS: "--http-host 0.0.0.0"
+    ports:
+      - 8161:8161
+      - 9404:9404
+      - 61616:61616
+      - 5445:5445
+      - 5672:5672
+      - 1883:1883
+      - 61613:61613
     networks:
       - dev
 

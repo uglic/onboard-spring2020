@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
 # distributed with this work for additional information
@@ -16,32 +16,42 @@
 # specific language governing permissions and limitations
 # under the License.
 
-
-
-# This is the entry point for the docker images.
-# This file is executed when docker run is called.
-
-
+# Setting the script to fail if anything goes wrong
 set -e
 
-BROKER_HOME=/var/lib/
-CONFIG_PATH=$BROKER_HOME/etc
-export BROKER_HOME OVERRIDE_PATH CONFIG_PATH
+#This is a script to Prepare an artemis folder to generate the Release.
 
-if [[ ${ANONYMOUS_LOGIN,,} == "true" ]]; then
-  LOGIN_OPTION="--allow-anonymous"
-else
-  LOGIN_OPTION="--require-login"
+
+error () {
+   echo ""
+   echo "$@"
+   echo ""
+   echo "Usage: ./prepare-docker.sh ARTEMIS_HOME_LOCATION"
+   echo ""
+   echo "example:"
+   echo "./prepare-docker.sh ../artemis-distribution/target/apache-artemis-2.7.0-SNAPSHOT-bin/apache-artemis-2.7.0-SNAPSHOT"
+   echo ""
+   exit 64
+}
+
+if [ ! "$#" -eq 1 ]
+then
+   error "Cannot match arguments"
 fi
 
-CREATE_ARGUMENTS="--user ${ARTEMIS_USER} --password ${ARTEMIS_PASSWORD} --silent ${LOGIN_OPTION} ${EXTRA_ARGS}"
+target=$1
 
-echo CREATE_ARGUMENTS=${CREATE_ARGUMENTS}
-
-if ! [ -f ./etc/broker.xml ]; then
-    /opt/activemq-artemis/bin/artemis create ${CREATE_ARGUMENTS} .
-else
-    echo "broker already created, ignoring creation"
+if [ ! -d $target ]
+then
+  error "Directory $target does not exist"
 fi
 
-exec ./bin/artemis "$@"
+if [ -d $target/docker ]
+then
+  rm -rf $target/docker
+fi
+mkdir $target/docker
+cp ./Dockerfile-* $target/docker
+cp ./docker-run.sh $target/docker
+
+echo "Docker file support files at : $target/docker"

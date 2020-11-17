@@ -34,7 +34,7 @@ RUN groupadd -g 1000 -r artemis && useradd -r -u 1000 -g artemis artemis \
     apt-get -qq -o=Dpkg::Use-Pty=0 install -y libaio1 && \
     rm -rf /var/lib/apt/lists/*
 
-USER ${ARTEMIS_USER}
+USER artemis
 
 ADD . /opt/activemq-artemis
 
@@ -55,11 +55,11 @@ EXPOSE 8161 \
 
 USER root
 
-RUN mkdir /var/lib/artemis-instance && chown -R ${ARTEMIS_USER}.${ARTEMIS_USER} /var/lib/artemis-instance
+RUN mkdir /var/lib/artemis-instance && chown -R artemis.artemis /var/lib/artemis-instance
 
-COPY ./docker-run.sh /
+COPY ./docker/docker-run.sh /
 
-USER ${ARTEMIS_USER}
+USER artemis
 
 # Expose some outstanding folders
 VOLUME ["/var/lib/artemis-instance"]
