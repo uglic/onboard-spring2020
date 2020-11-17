@@ -1,0 +1,46 @@
+version: "3"
+services:
+  postgres:
+    image: library/postgres:12
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    networks:
+      - dev
+
+  rabbitmq:
+    image: library/rabbitmq:3.8.9-management
+    ports:
+      # The standard AMQP protocol port
+      - 5672:5672
+      # HTTP management UI
+      - 15672:15672
+    environment:
+      RABBIT_USER: "guest"
+      RABBIT_PASS: "guest"
+    networks:
+      - dev
+
+  #  activemq:
+  #    image: teamartemis/artemis
+  #    ports:
+  #      - 61616:61616
+  #      - 8161:8161
+  #    networks:
+  #      - dev
+
+  activemq-artemis:
+    build: ./activemq-artemis
+    environment:
+      ARTEMIS_USER: "artemis"
+      ARTEMIS_PASSWORD: "artemis"
+      ANONYMOUS_LOGIN: "false"
+      EXTRA_ARGS: ""
+
+    networks:
+      - dev
+
+networks:
+  dev:
