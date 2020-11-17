@@ -29,7 +29,7 @@ services:
       ARTEMIS_USER: "artemis"
       ARTEMIS_PASSWORD: "artemis"
       ANONYMOUS_LOGIN: "false"
-      EXTRA_ARGS: "--http-host 0.0.0.0"
+      #EXTRA_ARGS: "--http-host 0.0.0.0 --relax-jolokia"
     ports:
       - 8161:8161
       - 9404:9404
