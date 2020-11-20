@@ -5,13 +5,14 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.Lifecycle;
+import org.springframework.context.SmartLifecycle;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 @Component
-public class LookupComponent implements Lifecycle, InitializingBean, DisposableBean {
+public class LookupComponent implements SmartLifecycle, InitializingBean, DisposableBean {
 
     @PostConstruct
     private void postConstruct() {
