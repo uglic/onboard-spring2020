@@ -2,6 +2,7 @@ package com.example.demo;
 
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.Lifecycle;
@@ -13,6 +14,8 @@ import javax.annotation.PreDestroy;
 
 @Component
 public class LookupComponent implements SmartLifecycle, InitializingBean, DisposableBean {
+    @Autowired
+    private SimpleComponent simpleComponent;
 
     @PostConstruct
     private void postConstruct() {

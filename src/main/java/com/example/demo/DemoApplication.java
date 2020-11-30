@@ -34,6 +34,6 @@ public class DemoApplication {
 
     @EventListener
     public void contextListener(ContextClosedEvent event) {
-        System.out.println("(ContextClosedEvent fired");  // fires OK
+        System.out.println("ContextClosedEvent fired");  // fires OK
     }
 }
